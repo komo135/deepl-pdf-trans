@@ -43,12 +43,12 @@ def main():
 
 
 if __name__ == "__main__":
-    lang = sys.argv[1] if len(sys.argv) == 2 else "en"
-    url = f"https://www.deepl.com/{1}/translator"
+    lang = sys.argv[1] if len(sys.argv) == 2 else "ja"
+    url = f"https://www.deepl.com/{lang}/translator"
 
     driver = webdriver.Chrome()
     driver.get(url)
 
-    keyboard.add_hotkey("alt+c", main)
+    keyboard.add_hotkey("ctrl+q", main)
     keyboard.wait("esc")
-    
+

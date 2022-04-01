@@ -14,6 +14,8 @@ pip install -r requirements.txt
 ```
 
 # run
+![image.png](https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/130763/22e75471-a56d-641f-0335-52ab279bb08a.png)
+
 To translate into Japanese
 ```console
 cd deepl-pdf-trans

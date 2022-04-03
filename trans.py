@@ -44,7 +44,7 @@ if __name__ == "__main__":
     driver = webdriver.Chrome()
     driver.get(url)
 
-    keyboard.add_hotkey("無変換", main)
+    keyboard.add_hotkey("ctrl+q", main)
     keyboard.wait("esc")
 
     driver.quit()

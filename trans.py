@@ -5,6 +5,7 @@ import re
 import keyboard
 import pyautogui
 import sys
+from selenium.webdriver.common.keys import Keys
 
 
 def main():
@@ -19,7 +20,9 @@ def main():
 
         # Accepts clipboard values as variables and removes line breaks
         text = pyperclip.paste()
-        text = re.sub(r"([\w,')''(']+)\r\n|([\w,')''(']+)\n|(\w,')''(']+)\r", r"\1 ", text).replace("  ", " ")
+        text = re.sub(r"([\w,')''('=]+)\r\n|([\w,')''('=]+)\n|(\w,')''('=]+)\r", r"\1 ", text).replace("  ", " ")
+        # text = re.sub(r"([a-zA-Z0-9,')''(']+)\r\n|([a-zA-Z0-9,')''(']+)\n|([a-zA-Z0-9,')''(']+)\r", r"\1 ",
+        # text).replace("  ", " ") To remove "-¥r¥n", encode once, then remove and decode
         text = re.sub(b"\xe2\x80\x90\r\n|\xe2\x80\x90\r|\xe2\x80\x90\n", b"", text.encode()).decode()
         text = re.sub(r"\r\n|\r|\n", "\n\n", text).replace("\n\n\n", "\n")
         pyperclip.copy(text)
@@ -28,8 +31,7 @@ def main():
         text_area = driver.find_element(By.XPATH, "//*[@id='panelTranslateText']/div[3]/section[1]/div[3]/div[2]/textarea")
         # Empty input fields
         text_area.clear()
-        text_area.click()
-        pyautogui.hotkey("ctrl", "v")
+        text_area.send_keys(Keys.CONTROL, 'v')
 
         driver.find_element(By.ID, "tabTranslateText").click()
 
@@ -38,13 +40,13 @@ def main():
 
 
 if __name__ == "__main__":
-    lang = sys.argv[1] if len(sys.argv) == 2 else "en"
+    lang = sys.argv[1] if len(sys.argv) == 2 else "ja"
     url = f"https://www.deepl.com/{lang}/translator"
 
     driver = webdriver.Chrome()
     driver.get(url)
 
-    keyboard.add_hotkey("ctrl+q", main)
+    keyboard.add_hotkey("無変換", main)
     keyboard.wait("esc")
 
     driver.quit()

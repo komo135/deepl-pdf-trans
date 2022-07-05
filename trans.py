@@ -6,9 +6,16 @@ import keyboard
 import pyautogui
 import sys
 from selenium.webdriver.common.keys import Keys
+# from pynput import keyboard
 
 
-def main():
+def start():
+    global driver
+    driver = webdriver.Chrome()
+    driver.get(url)
+
+
+def trans():
     try:
         pyautogui.hotkey("ctrl", "c")  # Copy text from select text
         try:
@@ -19,7 +26,12 @@ def main():
             pass
 
         # Accepts clipboard values as variables and removes line breaks
-        text = pyperclip.paste()
+        text = False
+        while not text:
+            try:
+                text = pyperclip.paste()
+            except:
+                pass
         text = re.sub(r"([\w,')''('=]+)\r\n|([\w,')''('=]+)\n|(\w,')''('=]+)\r", r"\1 ", text).replace("  ", " ")
         # text = re.sub(r"([a-zA-Z0-9,')''(']+)\r\n|([a-zA-Z0-9,')''(']+)\n|([a-zA-Z0-9,')''(']+)\r", r"\1 ",
         # text).replace("  ", " ") To remove "-¥r¥n", encode once, then remove and decode
@@ -35,18 +47,22 @@ def main():
 
         driver.find_element(By.ID, "tabTranslateText").click()
 
-    except:
-        print("An error has occurred.")
+    except Exception as e:
+        print(e)
 
 
 if __name__ == "__main__":
+    driver: webdriver.Chrome
     lang = sys.argv[1] if len(sys.argv) == 2 else "ja"
     url = f"https://www.deepl.com/{lang}/translator"
 
-    driver = webdriver.Chrome()
-    driver.get(url)
-
-    keyboard.add_hotkey("無変換", main)
-    keyboard.wait("esc")
-
-    driver.quit()
+    while True:
+        if keyboard.is_pressed("ctrl+shift+a"):
+            # start selenium and open deepl translator
+            start()
+        if keyboard.is_pressed("ctrl+shift+b"):
+            # translate text
+            trans()
+        if keyboard.is_pressed("esc"):
+            # close selenium
+            driver.quit()
